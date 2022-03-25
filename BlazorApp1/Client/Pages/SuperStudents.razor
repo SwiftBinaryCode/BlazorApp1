@@ -1,0 +1,52 @@
+﻿@page "/superstudents"
+@inject ISuperStudentService SuperStudentService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Students</PageTitle>
+
+<h3>SuperStudents</h3>
+
+<table class = "table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in SuperStudentService.Students)
+       {
+           <tr>
+               <th>@student.Name</th>
+               <th>@student.Email</th>
+          
+           <td>
+               <button class = "btn-link btn-primary" @onclick="(()=>ShowStudent(student.Id))"><i class = "oi oi-pencil"></i></button>
+           </td>
+
+            </tr>
+       }
+    </tbody>
+</table>
+
+<button class="btn-link btn-primary" @onclick="CreateNewStudent">Create new course</button>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await SuperStudentService.GetSuperStudents();
+    }
+
+    void ShowStudent(int id)
+    {
+        NavigationManager.NavigateTo($"student/{id}");
+    }
+
+    void CreateNewStudent()
+    {
+        NavigationManager.NavigateTo("/student");
+    }
+
+}
+
